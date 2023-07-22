@@ -1,9 +1,11 @@
+import Link from "next/link";
 import { FC } from "react";
 import {
     AiOutlineContacts,
     AiOutlineContainer,
     AiOutlineDashboard,
     AiOutlineMail,
+    AiOutlinePlus,
     AiOutlineTeam,
 } from "react-icons/ai";
 import AdminNav from "../common/AdminNav";
@@ -27,8 +29,11 @@ const AdminLayout: FC<Props> = ({children}): JSX.Element => {
         <div className="flex">
             <AdminNav navItems={navItems} />
             <div className="flex-1 p-4">
-            {children}
-            </div>
+            {children}</div>
+            {/*Create Button*/}
+            <Link href="/admin/posts/create" className="bg-secondary-dark dark:bg-secondary-light text-primary dark:text-primary-dark fixed z-10 right-10 bottom-10 p-3 rounded-full hover:scale-90 shadow-sm transition">
+                <AiOutlinePlus size={24} />
+            </Link>
         </div>
     );
 }
