@@ -11,15 +11,15 @@ const DropdownOptions: FC<Props> = ({ head, options }): JSX.Element => {
   return (
     <button 
         onBlur={() => setShowOptions(false)} 
-        onClick={() => setShowOptions(!showOptions)} 
+        onMouseDown={() => setShowOptions(!showOptions)} 
         className="relative"
     >
-        Paragraph
+        {head}
     {showOptions && (
         <div className="min-w-max absolute top-full mt-4 right-2 z-10 border-2 border-primary-dark dark:border-primary rounded text-left bg-primary dark:bg-primary-dark">
             <ul className="p-3 space-y-3">
                 {options.map(({label, onClick}, index) => {
-                    return <li key={label + index} onClick={onClick} className="p-2 text-secondary-dark cursor-pointer">{label}</li>
+                    return <li key={label + index} onMouseDown={onClick} className="p-2 text-secondary-dark cursor-pointer">{label}</li>
                 })}
             </ul>
         </div>
