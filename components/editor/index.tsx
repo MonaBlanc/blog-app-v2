@@ -6,8 +6,11 @@ import Youtube from "@tiptap/extension-youtube";
 import { EditorContent, Range, getMarkRange, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { FC, useEffect, useState } from "react";
+
+import axios from "axios";
 import GalleryModal, { ImageSelectionResult } from "./GalleryModal";
 import EditLink from "./Link/EditLink";
+import SEOForm from "./SeoForm";
 import Toolbar from "./Toolbar";
 
 interface Props {}
@@ -15,6 +18,25 @@ interface Props {}
 const Editor: FC<Props> = (): JSX.Element => {
   const [selectionRange, setSelectionRange] = useState<Range>();
   const [showGallery, setShowGallery] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [images, setImages] = useState<{src: string}[]>([]);
+  
+  const fetchImages = async () => {
+    const { data } = await axios("/api/image");
+    setImages(data.images);
+    console.log(data);
+  };
+
+  const handleImageUpload = async (image: File) => {
+    setUploading(true);
+    const formData = new FormData();
+    formData.append("image", image);
+    const { data } = await axios.post("/api/image", formData);
+    setUploading(false);
+    
+    setImages([data, ...images]);
+  };
+  
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -54,7 +76,7 @@ const Editor: FC<Props> = (): JSX.Element => {
       },
       attributes: {
         class:
-          "prose prose-lg focus:outline-non dark:prose-invert max-w-full mx-auto h-full",
+          "outline-none prose prose-lg focus:outline-non dark:prose-invert max-w-full mx-auto h-full",
       },
     },
   });
@@ -73,19 +95,38 @@ const Editor: FC<Props> = (): JSX.Element => {
     }
   }, [editor, selectionRange]);
 
+  useEffect(() => {
+    fetchImages();
+  }, []);
+
+
+
   return (
     <>
       <div className="p-3  dark:bg-primary-dark transition">
+        <input 
+        type="text" 
+        className="py-2 outline-none bg-transparent w-full border-0 border-b[1px] 
+        border-secondary-dark dark:border-secondary-light text-3xl 
+        font-semibold italic text-primary-dark dark:text-primary-light mb-3" 
+        placeholder="Title"
+        />
+        <div className="h-[1px] w-full dark:bg-secondary-dark bg-secondary-light mb-3" />
         <Toolbar editor={editor} onOpenImageClick={() => setShowGallery(true)}/>
         <div className="h-[1px] w-full dark:bg-secondary-dark bg-secondary-light my-3" />
         {editor ? <EditLink editor={editor} /> : null}
-        <EditorContent editor={editor} />
+        <EditorContent editor={editor} className="min-h-[300px]" />
+        <div className="h-[1px] w-full dark:bg-secondary-dark bg-secondary-light my-3" />
+        <SEOForm onChange={(result) =>{}} />
       </div>
+
       <GalleryModal
         visible={showGallery}
         onClose={() => setShowGallery(false)}
         onSelect={handleImageSelection}
-        //onImageSelect={}
+        images={images}
+        onImageSelect={handleImageUpload}
+        uploading={uploading}
       />
     </>
   );
