@@ -8,9 +8,11 @@ import StarterKit from "@tiptap/starter-kit";
 import { FC, useEffect, useState } from "react";
 
 import axios from "axios";
+import ActionButton from "../common/ActionButton";
 import GalleryModal, { ImageSelectionResult } from "./GalleryModal";
 import EditLink from "./Link/EditLink";
 import SEOForm from "./SeoForm";
+import ThumbnailSelector from "./ThumbnailSelector";
 import Toolbar from "./Toolbar";
 
 interface Props {}
@@ -104,6 +106,18 @@ const Editor: FC<Props> = (): JSX.Element => {
   return (
     <>
       <div className="p-3  dark:bg-primary-dark transition">
+
+        <div className="sticky top-0 z-10 dark:bg-primary-dark bg-primary-light">
+
+                  {/* Thumbnail Selector */}
+        <div className="flex items-center justify-between mb-3">
+          <ThumbnailSelector onChange={(file) => console.log(file)} />
+          <div className="inline-block">
+            <ActionButton title="Submit"/>
+          </div>
+        </div>
+
+        {/* Title Input */}
         <input 
         type="text" 
         className="py-2 outline-none bg-transparent w-full border-0 border-b[1px] 
@@ -114,6 +128,9 @@ const Editor: FC<Props> = (): JSX.Element => {
         <div className="h-[1px] w-full dark:bg-secondary-dark bg-secondary-light mb-3" />
         <Toolbar editor={editor} onOpenImageClick={() => setShowGallery(true)}/>
         <div className="h-[1px] w-full dark:bg-secondary-dark bg-secondary-light my-3" />
+        </div>
+
+
         {editor ? <EditLink editor={editor} /> : null}
         <EditorContent editor={editor} className="min-h-[300px]" />
         <div className="h-[1px] w-full dark:bg-secondary-dark bg-secondary-light my-3" />
