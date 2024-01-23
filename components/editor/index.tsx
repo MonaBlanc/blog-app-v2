@@ -5,7 +5,7 @@ import Underline from "@tiptap/extension-underline";
 import Youtube from "@tiptap/extension-youtube";
 import { EditorContent, Range, getMarkRange, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { FC, useEffect, useState } from "react";
+import { ChangeEventHandler, FC, useEffect, useState } from "react";
 
 import axios from "axios";
 import ActionButton from "../common/ActionButton";
@@ -15,25 +15,31 @@ import SEOForm, { SeoResult } from "./SeoForm";
 import ThumbnailSelector from "./ThumbnailSelector";
 import Toolbar from "./Toolbar";
 
-interface FinalPost extends SeoResult {
+export interface FinalPost extends SeoResult {
   title: string;
   content: string;
   thumbnail?: File | string;
 }
 
-interface Props {}
+interface Props {
+  initialValue?: FinalPost;
+  btnTitle?: string;
+  busy?: boolean;
+  onSubmit(post: FinalPost): void;
+}
 
-const Editor: FC<Props> = (): JSX.Element => {
+const Editor: FC<Props> = ({initialValue, btnTitle = 'Submit', busy = false, onSubmit}): JSX.Element => {
   const [selectionRange, setSelectionRange] = useState<Range>();
   const [showGallery, setShowGallery] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [images, setImages] = useState<{src: string}[]>([]);
+  const [seoInitialValue, setSeoInitialValue] = useState<SeoResult>();
   const [post, setPost] = useState<FinalPost>({
-    title: "",
-    content: "",
-    meta: "",
-    tags: "",
-    slug: ""
+    title: '',
+    content: '',
+    meta: '',
+    tags: '',
+    slug: '',
   });
   
   const fetchImages = async () => {
@@ -104,6 +110,17 @@ const Editor: FC<Props> = (): JSX.Element => {
         .run();
   };
 
+  const handleSubmit = () => {
+    if (!editor) return;
+    const content = editor.getHTML();
+    onSubmit({...post, content: editor.getHTML()});
+  };
+
+  const updateTitle: ChangeEventHandler<HTMLInputElement> = ({target}) => setPost({...post, title: target.value});
+  const updateSeoValue = (result: SeoResult) => setPost({...post, ...result});
+  const updateThumbnail = (file: File) => setPost({...post, thumbnail: file});
+
+
   useEffect(() => {
     if (editor && selectionRange) {
       editor.commands.setTextSelection(selectionRange);
@@ -113,6 +130,14 @@ const Editor: FC<Props> = (): JSX.Element => {
   useEffect(() => {
     fetchImages();
   }, []);
+
+  useEffect(() => {
+    if (!initialValue) return;
+    setPost({...initialValue});
+    editor?.commands.setContent(initialValue.content);
+    const {meta, slug, tags} = initialValue;
+    setSeoInitialValue({meta, slug, tags});
+  }, [initialValue, editor]);
 
 
 
@@ -124,9 +149,9 @@ const Editor: FC<Props> = (): JSX.Element => {
 
                   {/* Thumbnail Selector */}
         <div className="flex items-center justify-between mb-3">
-          <ThumbnailSelector onChange={(file) => console.log(file)} />
+          <ThumbnailSelector initialValue={post.thumbnail as string} onChange={updateThumbnail} />
           <div className="inline-block">
-            <ActionButton title="Submit"/>
+            <ActionButton busy={busy} title={btnTitle} onClick={handleSubmit} />
           </div>
         </div>
 
@@ -137,6 +162,7 @@ const Editor: FC<Props> = (): JSX.Element => {
         border-secondary-dark dark:border-secondary-light text-3xl 
         font-semibold italic text-primary-dark dark:text-primary-light mb-3" 
         placeholder="Title"
+        onChange={updateTitle}
         />
         <div className="h-[1px] w-full dark:bg-secondary-dark bg-secondary-light mb-3" />
         <Toolbar editor={editor} onOpenImageClick={() => setShowGallery(true)}/>
@@ -147,7 +173,8 @@ const Editor: FC<Props> = (): JSX.Element => {
         {editor ? <EditLink editor={editor} /> : null}
         <EditorContent editor={editor} className="min-h-[300px]" />
         <div className="h-[1px] w-full dark:bg-secondary-dark bg-secondary-light my-3" />
-        <SEOForm onChange={(result) =>{}} />
+        <SEOForm onChange={updateSeoValue} title={post.title} 
+        initialValue={seoInitialValue} />
       </div>
 
       <GalleryModal

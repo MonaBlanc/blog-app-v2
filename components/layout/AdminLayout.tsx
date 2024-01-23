@@ -9,10 +9,12 @@ import {
     AiOutlineTeam,
 } from "react-icons/ai";
 import AdminNav from "../common/AdminNav";
+import AppHead from "../common/AppHead";
 
 
 interface Props {
     children: React.ReactNode;
+    title?: string;
 }
 
 const navItems = [
@@ -24,8 +26,10 @@ const navItems = [
   ];
   
 
-const AdminLayout: FC<Props> = ({children}): JSX.Element => {
+const AdminLayout: FC<Props> = ({title, children}): JSX.Element => {
     return (
+        <>
+        <AppHead title={title} />
         <div className="flex">
             <AdminNav navItems={navItems} />
             <div className="flex-1 p-4">
@@ -35,6 +39,8 @@ const AdminLayout: FC<Props> = ({children}): JSX.Element => {
                 <AiOutlinePlus size={24} />
             </Link>
         </div>
+        </>
+
     );
 }
 
