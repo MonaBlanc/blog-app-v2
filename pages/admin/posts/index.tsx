@@ -5,9 +5,7 @@ import {
   NextPage,
 } from "next";
 import { useState } from "react";
-import ConfirmModal from "../../../components/common/ConfirmModal";
 import InfiniteScrollPosts from "../../../components/common/InfiniteScrollPosts";
-import PostCard from "../../../components/common/PostCard";
 import AdminLayout from "../../../components/layout/AdminLayout";
 import { formatPosts, readPostsFromDb } from "../../../lib/utils";
 import { filterPosts } from "../../../utils/helper";

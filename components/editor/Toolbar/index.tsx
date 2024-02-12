@@ -1,26 +1,24 @@
-import { FC } from "react";
 import { Editor } from "@tiptap/react";
+import { FC } from "react";
 import { AiFillCaretDown } from "react-icons/ai";
-import { RiDoubleQuotesL } from "react-icons/ri";
 import {
-  BsTypeStrikethrough,
   BsBraces,
   BsCode,
+  BsImageFill,
   BsListOl,
   BsListUl,
   BsTypeBold,
   BsTypeItalic,
-  BsTypeUnderline,
-  BsImageFill,
-  BsLink45Deg,
-  BsYoutube,
+  BsTypeStrikethrough,
+  BsTypeUnderline
 } from "react-icons/bs";
+import { RiDoubleQuotesL } from "react-icons/ri";
 
-import Button from "./Button";
-import { getFocusedEditor } from "../EditorUtils";
 import DropdownOptions from "../../common/DropdownOptions";
+import { getFocusedEditor } from "../EditorUtils";
 import InsertLink from "../Link/InsertLink";
 import { linkOption } from "../Link/LinkForm";
+import Button from "./Button";
 import EmbedYoutube from "./EmbedYoutube";
 
 interface Props {

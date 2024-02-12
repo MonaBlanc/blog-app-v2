@@ -1,15 +1,15 @@
-import { FC, ReactNode, useState } from "react";
-import ProfileIcon from "./ProfileIcon";
 import dateFormat from "dateformat";
 import parse from "html-react-parser";
+import { FC, ReactNode, useState } from "react";
 import {
   BsFillReplyAllFill,
   BsFillTrashFill,
   BsPencilSquare,
 } from "react-icons/bs";
-import CommentForm from "./CommentForm";
 import { CommentResponse } from "../../utils/types";
+import CommentForm from "./CommentForm";
 import LikeHeart from "./LikeHeart";
+import ProfileIcon from "./ProfileIcon";
 
 interface Props {
   comment: CommentResponse;
@@ -71,7 +71,7 @@ const CommentCard: FC<Props> = ({
           {name}
         </h1>
         <span className="text-sm text-secondary-dark">
-          {dateFormat(createdAt, "d-mmm-yyyy")}
+          {dateFormat(createdAt, "dd-mm-yyyy")}
         </span>
         <div className="text-primary-dark dark:text-primary">
           {parse(content)}

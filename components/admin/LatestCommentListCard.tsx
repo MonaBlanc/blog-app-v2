@@ -1,9 +1,9 @@
-import parse from "html-react-parser";
 import { FC } from "react";
 import { BsBoxArrowUpRight } from "react-icons/bs";
+import parse from "html-react-parser";
 import { trimText } from "../../utils/helper";
+import ProfileIcon from "../../components/common/ProfileIcon";
 import { LatestComment } from "../../utils/types";
-import ProfileIcon from "../components/common/ProfileIcon";
 
 interface Props {
   comment: LatestComment;

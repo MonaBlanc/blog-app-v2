@@ -1,19 +1,19 @@
-import { ChangeEventHandler, FC, useEffect, useState } from "react";
-import { useEditor, EditorContent, getMarkRange, Range } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import Placeholder from "@tiptap/extension-placeholder";
-import Link from "@tiptap/extension-link";
-import Youtube from "@tiptap/extension-youtube";
 import TipTapImage from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
+import Placeholder from "@tiptap/extension-placeholder";
+import Underline from "@tiptap/extension-underline";
+import Youtube from "@tiptap/extension-youtube";
+import { EditorContent, Range, getMarkRange, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { ChangeEventHandler, FC, useEffect, useState } from "react";
 
-import ToolBar from "./ToolBar";
-import EditLink from "./Link/EditLink";
-import GalleryModal, { ImageSelectionResult } from "./GalleryModal";
 import axios from "axios";
-import SEOForm, { SeoResult } from "./SeoForm";
 import ActionButton from "../common/ActionButton";
+import GalleryModal, { ImageSelectionResult } from "./GalleryModal";
+import EditLink from "./Link/EditLink";
+import SEOForm, { SeoResult } from "./SeoForm";
 import ThumbnailSelector from "./ThumbnailSelector";
+import ToolBar from "./ToolBar";
 
 export interface FinalPost extends SeoResult {
   id?: string;

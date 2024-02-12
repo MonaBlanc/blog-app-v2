@@ -1,9 +1,9 @@
-import Image from "next/image";
-import { FC } from "react";
 import dateformat from "dateformat";
-import { PostDetail } from "../../utils/types";
+import Image from "next/image";
 import Link from "next/link";
+import { FC } from "react";
 import { trimText } from "../../utils/helper";
+import { PostDetail } from "../../utils/types";
 
 interface Props {
   post: PostDetail;
@@ -35,7 +35,7 @@ const PostCard: FC<Props> = ({
       {/* Post Info */}
       <div className="p-2 flex-1 flex flex-col">
         <Link href={"/" + slug}>
-          <a>
+
             <div className="flex items-center justify-between text-sm text-primary-dark dark:text-primary">
               <div className="flex items-center space-x-1">
                 {tags.map((t, index) => (
@@ -49,7 +49,7 @@ const PostCard: FC<Props> = ({
               {trimText(title, 50)}
             </h1>
             <p className="text-secondary-dark">{trimText(meta, 70)}</p>
-          </a>
+
         </Link>
 
         {controls && (
@@ -58,8 +58,8 @@ const PostCard: FC<Props> = ({
               <span className="animate-pulse">Removing</span>
             ) : (
               <>
-                <Link href={"/admin/posts/update/" + slug}>
-                  <a className="hover:underline">Edit</a>
+                <Link className="hover:underline" href={"/admin/posts/update/" + slug}>
+                  Edit
                 </Link>
                 <button onClick={onDeleteClick} className="hover:underline">
                   Delete

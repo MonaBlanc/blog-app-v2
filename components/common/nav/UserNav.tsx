@@ -1,15 +1,15 @@
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 import { FC } from "react";
 import { HiLightBulb } from "react-icons/hi";
+import useDarkMode from "../../../hooks/useDarkMode";
+import { UserProfile } from "../../../utils/types";
 import { GitHubAuthButton } from "../../button";
 import { APP_NAME } from "../AppHead";
 import DropdownOptions, { dropDownOptions } from "../DropdownOptions";
 import Logo from "../Logo";
 import ProfileHead from "../ProfileHead";
-import { useRouter } from "next/router";
-import { UserProfile } from "../../../utils/types";
-import useDarkMode from "../../../hooks/useDarkMode";
 
 interface Props {}
 
@@ -46,11 +46,9 @@ const UserNav: FC<Props> = (props): JSX.Element => {
   return (
     <div className="flex items-center justify-between bg-primary-dark p-3">
       {/* Logo */}
-      <Link href="/">
-        <a className="flex space-x-2 text-highlight-dark">
+      <Link className="flex space-x-2 text-highlight-dark" href="/">
           <Logo className="fill-highlight-dark" />
           <span className="text-xl font-semibold">{APP_NAME}</span>
-        </a>
       </Link>
 
       <div className="flex items-center space-x-5">

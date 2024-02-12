@@ -1,7 +1,7 @@
-import { FC, useCallback } from "react";
 import classNames from "classnames";
-import { AiFillGithub } from "react-icons/ai";
 import { signIn } from "next-auth/react";
+import { FC, useCallback } from "react";
+import { AiFillGithub } from "react-icons/ai";
 
 interface Props {
   lightOnly?: boolean;

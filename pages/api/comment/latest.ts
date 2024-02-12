@@ -1,14 +1,7 @@
-import { isValidObjectId } from "mongoose";
 import { NextApiHandler } from "next";
-import dbConnect from "../../../lib/dbConnect";
-import { formatComment, isAdmin, isAuth } from "../../../lib/utils";
-import {
-  commentValidationSchema,
-  validateSchema,
-} from "../../../lib/validator";
+import { isAdmin } from "../../../lib/utils";
 import Comment from "../../../models/Comment";
-import Post from "../../../models/Post";
-import { CommentResponse, LatestComment } from "../../../utils/types";
+import { LatestComment } from "../../../utils/types";
 
 const handler: NextApiHandler = (req, res) => {
   const { method } = req;

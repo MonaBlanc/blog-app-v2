@@ -2,9 +2,9 @@ import axios from "axios";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import ContentWrapper from "../../components/admin/ContentWrapper";
+import LatesUserTable from "../../components/admin/LatesUserTable";
 import LatestCommentListCard from "../../components/admin/LatestCommentListCard";
 import LatestPostListCard from "../../components/admin/LatestPostListCard";
-import LatesUserTable from "../../components/admin/LatesUserTable";
 import AdminLayout from "../../components/layout/AdminLayout";
 import {
   LatestComment,

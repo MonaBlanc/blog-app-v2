@@ -1,11 +1,11 @@
-import { FC } from "react";
 import NextImage from "next/image";
+import { FC } from "react";
 import CheckMark from "../../common/CheckMark";
 
 interface Props {
   src: string;
   selected?: boolean;
-  alt?: string;
+  alt: string;
   onClick?(): void;
 }
 

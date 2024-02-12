@@ -1,16 +1,15 @@
 import Link from "next/link";
 import { FC, ReactNode } from "react";
 import {
-  AiOutlineDashboard,
   AiOutlineContainer,
-  AiOutlineTeam,
-  AiOutlineMail,
-  AiOutlineContacts,
+  AiOutlineDashboard,
   AiOutlineFileAdd,
+  AiOutlineMail,
+  AiOutlineTeam
 } from "react-icons/ai";
 
-import AdminNav from "../common/nav/AdminNav";
 import AppHead from "../common/AppHead";
+import AdminNav from "../common/nav/AdminNav";
 import AdminSecondaryNav from "../common/nav/AdminSecondaryNav";
 
 interface Props {
@@ -36,10 +35,8 @@ const AdminLayout: FC<Props> = ({ title, children }): JSX.Element => {
           {children}
         </div>
         {/* create button */}
-        <Link href="/admin/posts/create">
-          <a className="bg-secondary-dark dark:bg-secondary-light text-primary dark:text-primary-dark fixed z-10 right-10 bottom-10 p-3 rounded-full hover:scale-90 shadow-sm transition">
+        <Link className="bg-secondary-dark dark:bg-secondary-light text-primary dark:text-primary-dark fixed z-10 right-10 bottom-10 p-3 rounded-full hover:scale-90 shadow-sm transition" href="/admin/posts/create">
             <AiOutlineFileAdd size={24} />
-          </a>
         </Link>
       </div>
     </>

@@ -1,7 +1,7 @@
-import { FC, useCallback, useState } from "react";
-import { BsBoxArrowUpRight, BsPencilSquare } from "react-icons/bs";
-import { BiUnlink } from "react-icons/bi";
 import { BubbleMenu, Editor } from "@tiptap/react";
+import { FC, useCallback, useState } from "react";
+import { BiUnlink } from "react-icons/bi";
+import { BsBoxArrowUpRight, BsPencilSquare } from "react-icons/bs";
 import LinkForm, { linkOption } from "./LinkForm";
 
 interface Props {

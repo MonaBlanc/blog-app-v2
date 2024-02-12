@@ -1,4 +1,4 @@
-import { Schema, models, model, ObjectId, Model } from "mongoose";
+import { Model, Schema, model, models } from "mongoose";
 
 // title, content, slug, tags, thumbnail, meta, author, date
 export interface UserModelSchema {

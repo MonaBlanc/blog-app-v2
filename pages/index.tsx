@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import axios from "axios";
 import type {
   GetServerSideProps,
   InferGetServerSidePropsType,
@@ -7,12 +8,10 @@ import type {
 } from "next";
 import InfiniteScrollPosts from "../components/common/InfiniteScrollPosts";
 import DefaultLayout from "../components/layout/DefaultLayout";
-import { formatPosts, readPostsFromDb } from "../lib/utils";
-import { PostDetail, UserProfile } from "../utils/types";
-import axios from "axios";
-import { useSession } from "next-auth/react";
-import { filterPosts } from "../utils/helper";
 import useAuth from "../hooks/useAuth";
+import { formatPosts, readPostsFromDb } from "../lib/utils";
+import { filterPosts } from "../utils/helper";
+import { PostDetail } from "../utils/types";
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 

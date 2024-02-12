@@ -1,5 +1,5 @@
-import { NextApiHandler } from "next";
 import formidable from "formidable";
+import { NextApiHandler } from "next";
 import cloudinary from "../../lib/cloudinary";
 import { isAdmin, readFile } from "../../lib/utils";
 

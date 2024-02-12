@@ -1,16 +1,16 @@
+import dateFormat from "dateformat";
+import parse from "html-react-parser";
 import {
   GetStaticPaths,
   GetStaticProps,
   InferGetStaticPropsType,
   NextPage,
 } from "next";
-import parse from "html-react-parser";
+import Image from "next/image";
+import Comments from "../components/common/Comments";
 import DefaultLayout from "../components/layout/DefaultLayout";
 import dbConnect from "../lib/dbConnect";
 import Post from "../models/Post";
-import Image from "next/image";
-import dateFormat from "dateformat";
-import Comments from "../components/common/Comments";
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 

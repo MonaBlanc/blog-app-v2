@@ -1,5 +1,5 @@
-import { ChangeEventHandler, FC, useEffect, useState } from "react";
 import classnames from "classnames";
+import { ChangeEventHandler, FC, useEffect, useState } from "react";
 import slugify from "slugify";
 
 export interface SeoResult {
