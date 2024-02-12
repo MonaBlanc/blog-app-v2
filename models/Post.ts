@@ -1,17 +1,21 @@
-//title, content, slug, tags, thumbnail, meta, author, date
+import { Schema, models, model, ObjectId, Model } from "mongoose";
 
-import mongoose, { Schema } from "mongoose";
+// title, content, slug, tags, thumbnail, meta, author, date
+export interface PostModelSchema {
+  _id: ObjectId;
+  title: string;
+  slug: string;
+  meta: string;
+  content: string;
+  tags: string[];
+  thumbnail?: { url: string; public_id: string };
+  author: ObjectId;
+  createdAt: Date;
+}
 
-const PostSchema = new Schema(
+const PostSchema = new Schema<PostModelSchema>(
   {
     title: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      maxlength: 100,
-    },
-    content: {
       type: String,
       required: true,
       trim: true,
@@ -19,9 +23,18 @@ const PostSchema = new Schema(
     slug: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
-      maxlength: 100,
+      unique: true,
+    },
+    content: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    meta: {
+      type: String,
+      required: true,
+      trim: true,
     },
     tags: {
       type: [String],
@@ -31,15 +44,9 @@ const PostSchema = new Schema(
       url: String,
       public_id: String,
     },
-    meta: {
-      type: String,
-      required: true,
-      trim: true,
-    },
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
     },
   },
   {
@@ -47,6 +54,6 @@ const PostSchema = new Schema(
   }
 );
 
-const Post = mongoose.models?.Post || mongoose.model("Post", PostSchema);
+const Post = models?.Post || model("Post", PostSchema);
 
-export default Post;
+export default Post as Model<PostModelSchema>;

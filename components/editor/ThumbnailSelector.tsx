@@ -1,16 +1,18 @@
 import classNames from "classnames";
-import { init } from "next/dist/compiled/@vercel/og/satori";
 import { ChangeEventHandler, FC, useEffect, useState } from "react";
 
 interface Props {
-    initialValue?: string;
-    onChange(file: File): void;
+  initialValue?: string;
+  onChange(file: File): void;
 }
 
 const commonClass =
-  "border border-dashed border-secondary-dark flex items-center justify-center rounded cursor-pointer aspect-video";
+  "border border-dashed border-secondary-dark flex items-center justify-center rounded cursor-pointer aspect-video text-secondary-dark dark:text-secondary-light";
 
-const ThumbnailSelector: FC<Props> = ({initialValue, onChange}): JSX.Element => {
+const ThumbnailSelector: FC<Props> = ({
+  initialValue,
+  onChange,
+}): JSX.Element => {
   const [selectedThumbnail, setSelectedThumbnail] = useState("");
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { files } = target;
@@ -22,7 +24,7 @@ const ThumbnailSelector: FC<Props> = ({initialValue, onChange}): JSX.Element => 
   };
 
   useEffect(() => {
-    if(typeof initialValue === "string") setSelectedThumbnail(initialValue);
+    if (typeof initialValue === "string") setSelectedThumbnail(initialValue);
   }, [initialValue]);
 
   return (
@@ -36,9 +38,13 @@ const ThumbnailSelector: FC<Props> = ({initialValue, onChange}): JSX.Element => 
       />
       <label htmlFor="thumbnail">
         {selectedThumbnail ? (
-          <img src={selectedThumbnail} alt="" className={classNames(commonClass, 'object-cover')} />
+          <img
+            src={selectedThumbnail}
+            alt=""
+            className={classNames(commonClass, "object-cover")}
+          />
         ) : (
-          <PosterUI label="thumbnail" />
+          <PosterUI label="Thumbnail" />
         )}
       </label>
     </div>

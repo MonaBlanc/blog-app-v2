@@ -1,21 +1,22 @@
-import TipTapImage from "@tiptap/extension-image";
-import Link from "@tiptap/extension-link";
-import Placeholder from "@tiptap/extension-placeholder";
-import Underline from "@tiptap/extension-underline";
-import Youtube from "@tiptap/extension-youtube";
-import { EditorContent, Range, getMarkRange, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import { ChangeEventHandler, FC, useEffect, useState } from "react";
+import { useEditor, EditorContent, getMarkRange, Range } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import Placeholder from "@tiptap/extension-placeholder";
+import Link from "@tiptap/extension-link";
+import Youtube from "@tiptap/extension-youtube";
+import TipTapImage from "@tiptap/extension-image";
 
-import axios from "axios";
-import ActionButton from "../common/ActionButton";
-import GalleryModal, { ImageSelectionResult } from "./GalleryModal";
+import ToolBar from "./ToolBar";
 import EditLink from "./Link/EditLink";
+import GalleryModal, { ImageSelectionResult } from "./GalleryModal";
+import axios from "axios";
 import SEOForm, { SeoResult } from "./SeoForm";
+import ActionButton from "../common/ActionButton";
 import ThumbnailSelector from "./ThumbnailSelector";
-import Toolbar from "./Toolbar";
 
 export interface FinalPost extends SeoResult {
+  id?: string;
   title: string;
   content: string;
   thumbnail?: File | string;
@@ -28,24 +29,28 @@ interface Props {
   onSubmit(post: FinalPost): void;
 }
 
-const Editor: FC<Props> = ({initialValue, btnTitle = 'Submit', busy = false, onSubmit}): JSX.Element => {
+const Editor: FC<Props> = ({
+  initialValue,
+  btnTitle = "Submit",
+  busy = false,
+  onSubmit,
+}): JSX.Element => {
   const [selectionRange, setSelectionRange] = useState<Range>();
   const [showGallery, setShowGallery] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [images, setImages] = useState<{src: string}[]>([]);
+  const [images, setImages] = useState<{ src: string }[]>([]);
   const [seoInitialValue, setSeoInitialValue] = useState<SeoResult>();
   const [post, setPost] = useState<FinalPost>({
-    title: '',
-    content: '',
-    meta: '',
-    tags: '',
-    slug: '',
+    title: "",
+    content: "",
+    meta: "",
+    tags: "",
+    slug: "",
   });
-  
+
   const fetchImages = async () => {
     const { data } = await axios("/api/image");
     setImages(data.images);
-    console.log(data);
   };
 
   const handleImageUpload = async (image: File) => {
@@ -54,10 +59,10 @@ const Editor: FC<Props> = ({initialValue, btnTitle = 'Submit', busy = false, onS
     formData.append("image", image);
     const { data } = await axios.post("/api/image", formData);
     setUploading(false);
-    
+
     setImages([data, ...images]);
   };
-  
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -71,20 +76,20 @@ const Editor: FC<Props> = ({initialValue, btnTitle = 'Submit', busy = false, onS
         },
       }),
       Placeholder.configure({
-        placeholder: "Write something cool...",
+        placeholder: "Type something",
       }),
       Youtube.configure({
         width: 840,
-        height: 480,
+        height: 472.5,
         HTMLAttributes: {
           class: "mx-auto rounded",
         },
       }),
       TipTapImage.configure({
         HTMLAttributes: {
-          class: "mx-auto rounded",
+          class: "mx-auto",
         },
-      })
+      }),
     ],
     editorProps: {
       handleClick(view, pos, event) {
@@ -97,29 +102,30 @@ const Editor: FC<Props> = ({initialValue, btnTitle = 'Submit', busy = false, onS
       },
       attributes: {
         class:
-          "outline-none prose prose-lg focus:outline-non dark:prose-invert max-w-full mx-auto h-full",
+          "prose prose-lg focus:outline-none dark:prose-invert max-w-full mx-auto h-full",
       },
     },
   });
 
   const handleImageSelection = (result: ImageSelectionResult) => {
-      editor
-        ?.chain()
-        .focus()
-        .setImage({ src: result.src, alt: result.altText })
-        .run();
+    editor
+      ?.chain()
+      .focus()
+      .setImage({ src: result.src, alt: result.altText })
+      .run();
   };
 
   const handleSubmit = () => {
     if (!editor) return;
-    const content = editor.getHTML();
-    onSubmit({...post, content: editor.getHTML()});
+    onSubmit({ ...post, content: editor.getHTML() });
   };
 
-  const updateTitle: ChangeEventHandler<HTMLInputElement> = ({target}) => setPost({...post, title: target.value});
-  const updateSeoValue = (result: SeoResult) => setPost({...post, ...result});
-  const updateThumbnail = (file: File) => setPost({...post, thumbnail: file});
+  const updateTitle: ChangeEventHandler<HTMLInputElement> = ({ target }) =>
+    setPost({ ...post, title: target.value });
 
+  const updateSeoValue = (result: SeoResult) => setPost({ ...post, ...result });
+
+  const updateThumbnail = (file: File) => setPost({ ...post, thumbnail: file });
 
   useEffect(() => {
     if (editor && selectionRange) {
@@ -132,49 +138,58 @@ const Editor: FC<Props> = ({initialValue, btnTitle = 'Submit', busy = false, onS
   }, []);
 
   useEffect(() => {
-    if (!initialValue) return;
-    setPost({...initialValue});
-    editor?.commands.setContent(initialValue.content);
-    const {meta, slug, tags} = initialValue;
-    setSeoInitialValue({meta, slug, tags});
+    if (initialValue) {
+      setPost({ ...initialValue });
+      editor?.commands.setContent(initialValue.content);
+
+      const { meta, slug, tags } = initialValue;
+      setSeoInitialValue({ meta, slug, tags });
+    }
   }, [initialValue, editor]);
-
-
 
   return (
     <>
-      <div className="p-3  dark:bg-primary-dark transition">
-
-        <div className="sticky top-0 z-10 dark:bg-primary-dark bg-primary-light">
-
-                  {/* Thumbnail Selector */}
-        <div className="flex items-center justify-between mb-3">
-          <ThumbnailSelector initialValue={post.thumbnail as string} onChange={updateThumbnail} />
-          <div className="inline-block">
-            <ActionButton busy={busy} title={btnTitle} onClick={handleSubmit} />
+      <div className="p-3 dark:bg-primary-dark bg-primary transition">
+        <div className="sticky top-0 z-10 dark:bg-primary-dark bg-primary">
+          {/* Thumbnail Selector and Submit Button */}
+          <div className="flex items-center justify-between mb-3">
+            <ThumbnailSelector
+              initialValue={post.thumbnail as string}
+              onChange={updateThumbnail}
+            />
+            <div className="inline-block">
+              <ActionButton
+                busy={busy}
+                title={btnTitle}
+                onClick={handleSubmit}
+                disabled={busy}
+              />
+            </div>
           </div>
-        </div>
 
-        {/* Title Input */}
-        <input 
-        type="text" 
-        className="py-2 outline-none bg-transparent w-full border-0 border-b[1px] 
-        border-secondary-dark dark:border-secondary-light text-3xl 
-        font-semibold italic text-primary-dark dark:text-primary-light mb-3" 
-        placeholder="Title"
-        onChange={updateTitle}
-        />
-        <div className="h-[1px] w-full dark:bg-secondary-dark bg-secondary-light mb-3" />
-        <Toolbar editor={editor} onOpenImageClick={() => setShowGallery(true)}/>
-        <div className="h-[1px] w-full dark:bg-secondary-dark bg-secondary-light my-3" />
+          {/* Title Input */}
+          <input
+            type="text"
+            className="py-2 outline-none bg-transparent w-full border-0 border-b-[1px] border-secondary-dark dark:border-secondary-light text-3xl font-semibold italic text-primary-dark dark:text-primary mb-3"
+            placeholder="Title"
+            onChange={updateTitle}
+            value={post.title}
+          />
+          <ToolBar
+            editor={editor}
+            onOpenImageClick={() => setShowGallery(true)}
+          />
+          <div className="h-[1px] w-full bg-secondary-dark dark:bg-secondary-light my-3" />
         </div>
-
 
         {editor ? <EditLink editor={editor} /> : null}
         <EditorContent editor={editor} className="min-h-[300px]" />
-        <div className="h-[1px] w-full dark:bg-secondary-dark bg-secondary-light my-3" />
-        <SEOForm onChange={updateSeoValue} title={post.title} 
-        initialValue={seoInitialValue} />
+        <div className="h-[1px] w-full bg-secondary-dark dark:bg-secondary-light my-3" />
+        <SEOForm
+          onChange={updateSeoValue}
+          title={post.title}
+          initialValue={seoInitialValue}
+        />
       </div>
 
       <GalleryModal
@@ -182,7 +197,7 @@ const Editor: FC<Props> = ({initialValue, btnTitle = 'Submit', busy = false, onS
         onClose={() => setShowGallery(false)}
         onSelect={handleImageSelection}
         images={images}
-        onImageSelect={handleImageUpload}
+        onFileSelect={handleImageUpload}
         uploading={uploading}
       />
     </>

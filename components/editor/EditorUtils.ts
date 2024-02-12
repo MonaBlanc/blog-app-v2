@@ -1,18 +1,19 @@
 import { Editor } from "@tiptap/react";
 
 export const getFocusedEditor = (editor: Editor) => {
-    return editor.chain().focus();
+  return editor.chain().focus();
 };
 
 export const validateUrl = (url: string) => {
-    if (!url.trim()) return ``;
-    let finalUrl;
+  if (!url.trim()) return "";
 
-    try {
-        finalUrl = new URL(url);
-    } catch (error) {
-        finalUrl = new URL(`http://${url}`);
-    }
+  let finalUrl;
 
-    return finalUrl.origin;
+  try {
+    finalUrl = new URL(url);
+  } catch (error) {
+    finalUrl = new URL("http://" + url);
+  }
+
+  return finalUrl.origin;
 };

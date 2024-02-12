@@ -1,5 +1,5 @@
-import classnames from "classnames";
 import { ChangeEventHandler, FC, useEffect, useState } from "react";
+import classnames from "classnames";
 import slugify from "slugify";
 
 export interface SeoResult {
@@ -35,7 +35,9 @@ const SEOForm: FC<Props> = ({
   };
 
   useEffect(() => {
-    const slug = slugify(title.toLowerCase());
+    const slug = slugify(title.toLowerCase(), {
+      strict: true,
+    });
     const newValues = { ...values, slug };
     setValues(newValues);
     onChange(newValues);
@@ -43,7 +45,12 @@ const SEOForm: FC<Props> = ({
 
   useEffect(() => {
     if (initialValue) {
-      setValues({ ...initialValue, slug: slugify(initialValue.slug) });
+      setValues({
+        ...initialValue,
+        slug: slugify(initialValue.slug, {
+          strict: true,
+        }),
+      });
     }
   }, [initialValue]);
 

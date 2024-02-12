@@ -1,27 +1,27 @@
-import ActionButton from "@/components/common/ActionButton";
-import ModalContainer, { ModalProps } from "@/components/common/ModalContainer";
 import Image from "next/image";
 import { ChangeEventHandler, FC, useCallback, useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
+import ActionButton from "../../common/ActionButton";
+import ModalContainer, { ModalProps } from "../../common/ModalContainer";
 import Gallery from "./Gallery";
 
 export interface ImageSelectionResult {
   src: string;
-  altText?: string;
+  altText: string;
 }
 
 interface Props extends ModalProps {
   images: { src: string }[];
   uploading?: boolean;
-  onImageSelect(image: File): void;
+  onFileSelect(image: File): void;
   onSelect(result: ImageSelectionResult): void;
 }
 
 const GalleryModal: FC<Props> = ({
   visible,
-  images,
   uploading,
-  onImageSelect,
+  images,
+  onFileSelect,
   onSelect,
   onClose,
 }): JSX.Element => {
@@ -38,29 +38,22 @@ const GalleryModal: FC<Props> = ({
 
     const file = files[0];
     if (!file.type.startsWith("image")) return handleClose();
-    onImageSelect(file);
+
+    onFileSelect(file);
   };
 
   const handleSelection = () => {
     if (!selectedImage) return handleClose();
-    onSelect({ src: selectedImage });
+    onSelect({ src: selectedImage, altText });
     handleClose();
-  };
-
-  // Prevent the click event from propagating and closing the modal
-  const handleModalContentClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.stopPropagation();
   };
 
   return (
     <ModalContainer visible={visible} onClose={onClose}>
-      <div
-        className="max-w-4xl p-2 rounded bg-primary-dark dark:bg-primary-light"
-        onClick={handleModalContentClick}
-      >
+      <div className="max-w-4xl p-2 bg-primary-dark dark:bg-primary rounded">
         <div className="flex">
-          {/*gallery images*/}
-          <div className="basis-[75%] max-h-[450px] overflow-y-auto">
+          {/* gallery */}
+          <div className="basis-[75%] max-h-[450px] overflow-y-auto custom-scroll-bar">
             <Gallery
               images={images}
               selectedImage={selectedImage}
@@ -68,7 +61,8 @@ const GalleryModal: FC<Props> = ({
               onSelect={(src) => setSelectedImage(src)}
             />
           </div>
-          {/*image actions*/}
+
+          {/* image selection and upload */}
           <div className="basis-1/4 px-2">
             <div className="space-y-4">
               <div>
@@ -89,22 +83,20 @@ const GalleryModal: FC<Props> = ({
               {selectedImage ? (
                 <>
                   <textarea
-                    className="resize-none w-full rounded border-2
-                      border-secondary-dark focus:ring-1 text-primary-light 
-                      dark:text-primary-dark h-32 p-1"
-                    placeholder="Enter some alt text..."
+                    className="resize-none w-full bg-transparent rounded border-2 border-secondary-dark focus:ring-1 text-primary dark:text-primary-dark h-32 p-1"
+                    placeholder="Alt text"
                     value={altText}
                     onChange={({ target }) => setAltText(target.value)}
                   ></textarea>
 
                   <ActionButton onClick={handleSelection} title="Select" />
 
-                  <div className="relative aspect-square">
+                  <div className="relative aspect-video bg-png-pattern">
                     <Image
-                      alt="gallery image"
                       src={selectedImage}
                       layout="fill"
                       objectFit="contain"
+                      alt="selected"
                     />
                   </div>
                 </>

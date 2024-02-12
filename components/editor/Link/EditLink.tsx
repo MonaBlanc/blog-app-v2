@@ -1,8 +1,7 @@
-import { BubbleMenu, Editor } from "@tiptap/react";
-import Link from "next/link";
 import { FC, useCallback, useState } from "react";
-import { BiUnlink } from "react-icons/bi";
 import { BsBoxArrowUpRight, BsPencilSquare } from "react-icons/bs";
+import { BiUnlink } from "react-icons/bi";
+import { BubbleMenu, Editor } from "@tiptap/react";
 import LinkForm, { linkOption } from "./LinkForm";
 
 interface Props {
@@ -11,6 +10,7 @@ interface Props {
 
 const EditLink: FC<Props> = ({ editor }): JSX.Element => {
   const [showEditForm, setShowEditForm] = useState(false);
+
   const handleOnLinkOpenClick = useCallback(() => {
     const { href } = editor.getAttributes("link");
     if (href) {
@@ -31,8 +31,9 @@ const EditLink: FC<Props> = ({ editor }): JSX.Element => {
       .chain()
       .focus()
       .unsetLink()
-      .setLink({ href: url, target: openInNewTab ? "_blank" : "_self" })
+      .setLink({ href: url, target: openInNewTab ? "_blank" : "" })
       .run();
+    setShowEditForm(false);
   };
 
   const getInitialState = useCallback(() => {
@@ -48,6 +49,7 @@ const EditLink: FC<Props> = ({ editor }): JSX.Element => {
         onHide: () => {
           setShowEditForm(false);
         },
+        appendTo: "parent",
       }}
     >
       <LinkForm

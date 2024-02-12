@@ -1,5 +1,5 @@
+import React, { FC, MouseEventHandler, ReactNode, useCallback } from "react";
 import classnames from "classnames";
-import { FC, MouseEventHandler, ReactNode, useCallback } from "react";
 
 interface Props {
   children: ReactNode;
@@ -18,7 +18,7 @@ const Button: FC<Props> = ({
 }): JSX.Element => {
   const getActiveStyle = useCallback((): string => {
     if (active)
-      return "dark:bg-primary dark:text-primary-dark bg-primary-dark text-primary-light";
+      return "dark:bg-primary dark:text-primary-dark bg-primary-dark text-primary";
     else return "text-secondary-light bg-secondary-dark";
   }, [active]);
 
